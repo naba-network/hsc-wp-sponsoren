@@ -1,0 +1,153 @@
+/*
+ * [hsc-sponsoren-slider] variants: premium (default) and standard.
+ * No background on purpose: the slider can sit on any colour. The fade at both ends is a mask.
+ * Speed: run time = cards x seconds per card (--hsc-spc), so it is the same for any number of sponsors.
+ */
+.hsc-slider-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.hsc-slider {
+	--hsc-card-w: 200px;
+	--hsc-card-h: 112px;
+	--hsc-gap: 20px;
+	--hsc-spc: 8;
+	--hsc-fade: 12%;
+
+	container-type: inline-size;
+	display: flex;
+	width: 100%;
+	padding: 16px 0;
+	overflow: hidden;
+	-webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--hsc-fade), #000 calc(100% - var(--hsc-fade)), transparent 100%);
+	mask-image: linear-gradient(90deg, transparent 0, #000 var(--hsc-fade), #000 calc(100% - var(--hsc-fade)), transparent 100%);
+}
+
+.hsc-slider .hsc-slider__track {
+	display: flex;
+	flex: none;
+	gap: var(--hsc-gap);
+	margin: 0;
+	padding: 0 calc(var(--hsc-gap) / 2);
+	list-style: none;
+	animation: hsc-slider-run calc(var(--hsc-n) * var(--hsc-spc) * 1s) linear infinite;
+}
+
+.hsc-slider .hsc-slider__card {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: var(--hsc-card-w);
+	height: var(--hsc-card-h);
+	margin: 0;
+	padding: 18px 22px;
+	list-style: none;
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 1px 2px rgba(26, 26, 26, 0.06), 0 6px 18px rgba(26, 26, 26, 0.07);
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.hsc-slider .hsc-slider__img {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+	margin: 0;
+	object-fit: contain;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* Rows 2, 4, ... run the other way. */
+.hsc-slider .hsc-slider__track--reverse {
+	animation-direction: reverse;
+}
+
+@keyframes hsc-slider-run {
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+/* Phone: exactly three logos at a time (3 cards + 3 gaps = full width). */
+@media (max-width: 520px) {
+	.hsc-slider {
+		--hsc-gap: 12px;
+		--hsc-spc: 5.2;
+		--hsc-fade: 8%;
+		--hsc-card-w: calc((100cqw - 3 * var(--hsc-gap)) / 3);
+		--hsc-card-h: calc(var(--hsc-card-w) * 0.66);
+	}
+
+	.hsc-slider .hsc-slider__card {
+		padding: 10px 12px;
+	}
+}
+
+/*
+ * Standard: three rows of small grey cards, slow. Phone: four logos per row.
+ * Same selector weight as the premium rules and placed after them, so these win.
+ */
+.hsc-slider.hsc-slider--standard {
+	--hsc-card-w: 112px;
+	--hsc-card-h: 64px;
+	--hsc-gap: 12px;
+	--hsc-spc: 18;
+	--hsc-fade: 10%;
+
+	padding: 5px 0;
+}
+
+.hsc-slider.hsc-slider--standard .hsc-slider__card {
+	padding: 9px 12px;
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(26, 26, 26, 0.05);
+}
+
+.hsc-slider.hsc-slider--standard .hsc-slider__img {
+	filter: grayscale(1);
+	opacity: 0.78;
+	transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.hsc-slider.hsc-slider--standard .hsc-slider__card:hover .hsc-slider__img {
+	filter: none;
+	opacity: 1;
+}
+
+@media (max-width: 520px) {
+	.hsc-slider.hsc-slider--standard {
+		--hsc-gap: 8px;
+		--hsc-spc: 16;
+		--hsc-fade: 8%;
+		--hsc-card-w: calc((100cqw - 4 * var(--hsc-gap)) / 4);
+		--hsc-card-h: calc(var(--hsc-card-w) * 0.66);
+	}
+
+	.hsc-slider.hsc-slider--standard .hsc-slider__card {
+		padding: 6px 8px;
+		border-radius: 8px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hsc-slider {
+		overflow-x: auto;
+		-webkit-mask-image: none;
+		mask-image: none;
+	}
+
+	.hsc-slider .hsc-slider__track {
+		animation: none;
+	}
+
+	.hsc-slider .hsc-slider__track[aria-hidden] {
+		display: none;
+	}
+}
