@@ -1,6 +1,6 @@
 /*
  * [hsc-sponsoren-grid]: columns per screen size via grid-items, grid-items-tablet, grid-items-mobile.
- * Look: quiet. Grey logos in a thin outlined tile, colour on hover/focus. No background on purpose.
+ * Look: quiet. Full-colour logos on a white card with a thin outline.
  * Logo size follows the column width, so more columns = smaller logos.
  */
 .hsc-grid {
@@ -16,13 +16,11 @@
 	max-width: calc(var(--hsc-cols) * 340px);
 	margin: 0 auto;
 	padding: 0;
-	list-style: none;
 }
 
 .hsc-grid .hsc-grid__item {
 	margin: 0;
 	padding: 0;
-	list-style: none;
 }
 
 .hsc-grid .hsc-grid__link,
@@ -30,7 +28,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 8px;
 	height: 100%;
 	color: inherit;
 	text-align: center;
@@ -42,9 +39,10 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
+	margin-bottom: 8px;
 	aspect-ratio: 3 / 2;
 	padding: clamp(8px, 11%, 22px);
-	background: transparent;
+	background: #fff;
 	border: 1px solid var(--hsc-line);
 	border-radius: 8px;
 	transition: border-color 0.2s ease;
@@ -58,21 +56,12 @@
 	max-height: 100%;
 	margin: 0;
 	object-fit: contain;
-	filter: grayscale(1);
-	opacity: 0.78;
-	transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .hsc-grid .hsc-grid__name {
 	font-size: 0.8125rem;
 	line-height: 1.25;
 	overflow-wrap: anywhere;
-}
-
-.hsc-grid a.hsc-grid__link:hover .hsc-grid__img,
-.hsc-grid a.hsc-grid__link:focus-visible .hsc-grid__img {
-	filter: none;
-	opacity: 1;
 }
 
 .hsc-grid a.hsc-grid__link:hover .hsc-grid__logo,
@@ -84,6 +73,18 @@
 	outline: 2px solid currentColor;
 	outline-offset: 4px;
 	border-radius: 8px;
+}
+
+/* Reveal animation: only active when grid.js is loaded (class set by PHP). */
+.hsc-grid--reveal .hsc-grid__item {
+	opacity: 0;
+	transform: translateY(12px);
+	transition: opacity 0.6s ease var(--hsc-delay, 0ms), transform 0.6s ease var(--hsc-delay, 0ms);
+}
+
+.hsc-grid--reveal .hsc-grid__item.is-visible {
+	opacity: 1;
+	transform: none;
 }
 
 /* Tablet */
@@ -104,7 +105,12 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.hsc-grid .hsc-grid__logo,
-	.hsc-grid .hsc-grid__img {
+	.hsc-grid--reveal .hsc-grid__item {
 		transition: none;
+	}
+
+	.hsc-grid--reveal .hsc-grid__item {
+		opacity: 1;
+		transform: none;
 	}
 }

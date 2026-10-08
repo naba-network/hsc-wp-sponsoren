@@ -210,7 +210,7 @@ final class Shortcodes_Page {
 			<ul style="list-style: disc; padding-left: 1.5em;">
 				<li><?php esc_html_e( 'Hauptsponsor: grid-items="1" oder "2" für große Logos, Gönner: 6 bis 8 für kleine.', 'hsc-sponsoren' ); ?></li>
 				<li><?php esc_html_e( 'Sponsoren ohne Bild erscheinen nur mit Namen. Mit Website ist die Zelle ein Link auf die gespeicherte Adresse, immer in einem neuen Tab.', 'hsc-sponsoren' ); ?></li>
-				<li><?php esc_html_e( 'Logos sind grau und werden bei Hover farbig. Das Raster hat keinen eigenen Hintergrund.', 'hsc-sponsoren' ); ?></li>
+				<li><?php esc_html_e( 'Logos sind farbig und stehen auf weißen Karten mit dünnem Rahmen.', 'hsc-sponsoren' ); ?></li>
 			</ul>
 		</div>
 		<?php

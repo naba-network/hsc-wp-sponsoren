@@ -117,14 +117,14 @@ final class Slider_Shortcode {
 
 		$band = '';
 		foreach ( $cards as $card ) {
-			$band .= '<li class="hsc-slider__card">' . $card . '</li>';
+			$band .= '<div class="hsc-slider__card" role="listitem">' . $card . '</div>';
 		}
 
 		$track = 'hsc-slider__track' . ( $reverse ? ' hsc-slider__track--reverse' : '' );
 
 		// The second copy is only there for the loop, so screen readers skip it.
 		return sprintf(
-			'<div class="hsc-slider hsc-slider--%1$s" style="--hsc-n:%2$d"><ul class="%3$s">%4$s</ul><ul class="%3$s" aria-hidden="true">%4$s</ul></div>',
+			'<div class="hsc-slider hsc-slider--%1$s" style="--hsc-n:%2$d"><div class="%3$s" role="list">%4$s</div><div class="%3$s" aria-hidden="true">%4$s</div></div>',
 			esc_attr( $variant ),
 			count( $cards ),
 			esc_attr( $track ),

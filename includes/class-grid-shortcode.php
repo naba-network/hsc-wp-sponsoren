@@ -26,6 +26,7 @@ final class Grid_Shortcode {
 	public const ATTR_TABLET   = 'grid-items-tablet';
 	public const ATTR_MOBILE   = 'grid-items-mobile';
 	public const STYLE_HANDLE  = 'hsc-sponsoren-grid';
+	public const SCRIPT_HANDLE = 'hsc-sponsoren-grid';
 
 	/**
 	 * Image size used for the logos.
@@ -54,9 +55,10 @@ final class Grid_Shortcode {
 	}
 
 	/**
-	 * Registers the stylesheet; it is only loaded on pages that use the shortcode.
+	 * Registers stylesheet and script; they are only loaded on pages that use the shortcode.
 	 */
 	public function register_assets(): void {
+		wp_register_script( self::SCRIPT_HANDLE, $this->plugin_url . 'assets/grid.js', array(), $this->version, true );
 		wp_register_style( self::STYLE_HANDLE, $this->plugin_url . 'assets/grid.css', array(), $this->version );
 	}
 
@@ -91,11 +93,12 @@ final class Grid_Shortcode {
 		}
 
 		wp_enqueue_style( self::STYLE_HANDLE );
+		wp_enqueue_script( self::SCRIPT_HANDLE );
 
 		$cols = Sponsor_Grid::responsive( (string) $atts[ self::ATTR_ITEMS ], (string) $atts[ self::ATTR_TABLET ], (string) $atts[ self::ATTR_MOBILE ] );
 
 		return sprintf(
-			'<ul class="hsc-grid" style="--hsc-cols:%1$d;--hsc-cols-t:%4$d;--hsc-cols-m:%5$d" aria-label="%2$s">%3$s</ul>',
+			'<div class="hsc-grid hsc-grid--reveal" role="list" style="--hsc-cols:%1$d;--hsc-cols-t:%4$d;--hsc-cols-m:%5$d" aria-label="%2$s">%3$s</div><noscript><style>.hsc-grid--reveal .hsc-grid__item{opacity:1;transform:none}</style></noscript>',
 			$cols['desktop'],
 			esc_attr( sprintf( /* translators: %s: category name */ __( 'Sponsoren: %s', 'hsc-sponsoren' ), $term->name ) ),
 			$items,
@@ -123,7 +126,7 @@ final class Grid_Shortcode {
 			$inner = '<a class="hsc-grid__link" href="' . esc_url( $site ) . '" target="_blank" rel="noopener noreferrer">' . $inner . '</a>';
 		}
 
-		return '<li class="hsc-grid__item">' . $inner . '</li>';
+		return '<div class="hsc-grid__item" role="listitem">' . $inner . '</div>';
 	}
 
 	/**
