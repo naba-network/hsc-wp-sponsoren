@@ -3,6 +3,12 @@
 All notable changes to this project are documented here.
 Versions are generated automatically on push to `production`.
 
+## [0.1.3] - 2026-10-08
+
+### Changed
+
+- grid
+
 ## [0.1.2] - 2026-10-08
 
 ### Changed
