@@ -50,7 +50,12 @@ final class Updater {
 	 * Hook into WordPress.
 	 */
 	public function register(): void {
-		if ( self::is_disabled() || ! class_exists( PucFactory::class ) ) {
+		if ( self::is_disabled() ) {
+			return;
+		}
+
+		if ( ! class_exists( PucFactory::class ) ) {
+			add_action( 'admin_notices', array( $this, 'render_missing_vendor_notice' ) );
 			return;
 		}
 
@@ -69,5 +74,26 @@ final class Updater {
 		if ( $api instanceof GitHubApi ) {
 			$api->enableReleaseAssets();
 		}
+	}
+
+	/**
+	 * Warns admins that updates cannot work because vendor/ is missing.
+	 *
+	 * This happens when the plugin was installed from the repository source instead of the release zip.
+	 */
+	public function render_missing_vendor_notice(): void {
+		if ( ! current_user_can( 'update_plugins' ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-warning"><p>%s</p></div>',
+			esc_html(
+				sprintf(
+					'Das Plugin „%s“ kann keine Updates erhalten, weil der Ordner vendor/ fehlt. Installiere das Plugin einmalig aus dem ZIP des neuesten GitHub-Releases.',
+					$this->slug
+				)
+			)
+		);
 	}
 }
