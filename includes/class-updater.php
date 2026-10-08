@@ -32,10 +32,25 @@ final class Updater {
 	) {}
 
 	/**
+	 * Whether updates are switched off for this environment.
+	 *
+	 * In local development the plugin folder is a bind mount of the git repo. A plugin update deletes
+	 * that folder first, which would wipe the working copy including .git. Define
+	 * HSC_DISABLE_UPDATER as true to opt out anywhere else.
+	 */
+	public static function is_disabled(): bool {
+		if ( defined( 'HSC_DISABLE_UPDATER' ) && true === constant( 'HSC_DISABLE_UPDATER' ) ) {
+			return true;
+		}
+
+		return in_array( wp_get_environment_type(), array( 'local', 'development' ), true );
+	}
+
+	/**
 	 * Hook into WordPress.
 	 */
 	public function register(): void {
-		if ( ! class_exists( PucFactory::class ) ) {
+		if ( self::is_disabled() || ! class_exists( PucFactory::class ) ) {
 			return;
 		}
 

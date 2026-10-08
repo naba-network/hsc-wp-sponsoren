@@ -1,0 +1,7 @@
+.hsc-bulk-drop { max-width: 640px; padding: 32px 16px; text-align: center; background: #fff; border: 2px dashed #8c8f94; border-radius: 4px; }
+.hsc-bulk-drop.is-over { background: #f0f6fc; border-color: #2271b1; }
+.hsc-bulk-drop.is-disabled { opacity: .5; }
+.hsc-bulk-queue { max-width: 640px; margin: 1em 0; padding: 0; list-style: none; }
+.hsc-bulk-queue li { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px; padding: 6px 10px; background: #fff; border: 1px solid #c3c4c7; }
+.hsc-bulk-queue .is-done { border-left: 4px solid #00a32a; }
+.hsc-bulk-queue .is-failed { border-left: 4px solid #d63638; }

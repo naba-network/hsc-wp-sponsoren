@@ -1,0 +1,8 @@
+.hsc-order-picker { margin: 1em 0; display: flex; gap: 8px; align-items: center; }
+.hsc-order-list { max-width: 640px; margin: 1em 0; padding: 0; list-style: none; }
+.hsc-order-item { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; padding: 6px 10px; background: #fff; border: 1px solid #c3c4c7; }
+.hsc-order-handle { cursor: move; color: #646970; }
+.hsc-order-thumb { width: 40px; height: 40px; flex: none; }
+.hsc-order-thumb img { display: block; max-width: 40px; max-height: 40px; object-fit: contain; }
+.hsc-order-title { flex: 1; font-weight: 600; }
+.hsc-order-placeholder { height: 52px; margin: 0 0 6px; background: #f0f0f1; border: 1px dashed #8c8f94; }

@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 SLUG=hsc-sponsoren
 rm -rf dist && mkdir -p "dist/$SLUG"
-cp -R "$SLUG.php" includes readme.txt CHANGELOG.md LICENSE composer.json composer.lock "dist/$SLUG/"
+cp -R "$SLUG.php" includes assets readme.txt CHANGELOG.md LICENSE composer.json composer.lock "dist/$SLUG/"
 # Install into the build dir so the dev vendor/ of the working copy stays untouched.
 composer install --working-dir="dist/$SLUG" --no-dev --optimize-autoloader --no-interaction --quiet
 rm "dist/$SLUG/composer.json" "dist/$SLUG/composer.lock"
