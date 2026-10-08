@@ -53,6 +53,7 @@ final class Shortcodes_Page {
 		echo '<p>' . esc_html__( 'Füge einen Shortcode in einen Textblock oder ein Shortcode-Modul der Seite ein. Du kannst ihn beliebig oft pro Seite verwenden.', 'hsc-sponsoren' ) . '</p>';
 
 		$this->render_slider();
+		$this->render_grid();
 
 		echo '</div>';
 	}
@@ -138,6 +139,78 @@ final class Shortcodes_Page {
 				<li><?php esc_html_e( 'Auf dem Handy sind bei Premium drei Logos gleichzeitig sichtbar.', 'hsc-sponsoren' ); ?></li>
 				<li><?php esc_html_e( 'Bilder laden erst, wenn sie in die Nähe des sichtbaren Bereichs kommen.', 'hsc-sponsoren' ); ?></li>
 				<li><?php esc_html_e( 'Nutzt die Website einen Seiten-Cache, bleibt die zufällige Reihenfolge bis zum nächsten Leeren des Caches gleich.', 'hsc-sponsoren' ); ?></li>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Documentation of the grid shortcode.
+	 */
+	private function render_grid(): void {
+		$tag       = Grid_Shortcode::TAG;
+		$attribute = Grid_Shortcode::ATTR_CATEGORY;
+		$items     = Grid_Shortcode::ATTR_ITEMS;
+		$tablet    = Grid_Shortcode::ATTR_TABLET;
+		$mobile    = Grid_Shortcode::ATTR_MOBILE;
+		$terms     = $this->terms();
+		$example   = array() === $terms ? 'premium' : $terms[0]->slug;
+		?>
+		<div class="card" style="max-width: 800px;">
+			<h2 style="margin-top: 0;"><code>[<?php echo esc_html( $tag ); ?>]</code></h2>
+			<p><?php esc_html_e( 'Zeigt die Sponsoren einer Kategorie als Raster. Unter jedem Logo steht der Name als Text (gut für Suchmaschinen). Die Reihenfolge ist die, die du unter Sponsoren > Reihenfolge festlegst.', 'hsc-sponsoren' ); ?></p>
+
+			<h3><?php esc_html_e( 'Attribute', 'hsc-sponsoren' ); ?></h3>
+			<table class="widefat striped">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Attribut', 'hsc-sponsoren' ); ?></th>
+						<th><?php esc_html_e( 'Pflicht', 'hsc-sponsoren' ); ?></th>
+						<th><?php esc_html_e( 'Beschreibung', 'hsc-sponsoren' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code><?php echo esc_html( $attribute ); ?></code></td>
+						<td><?php esc_html_e( 'Ja', 'hsc-sponsoren' ); ?></td>
+						<td><?php esc_html_e( 'Kürzel (Slug) oder ID der Kategorie.', 'hsc-sponsoren' ); ?></td>
+					</tr>
+					<tr>
+						<td><code><?php echo esc_html( $items ); ?></code></td>
+						<td><?php esc_html_e( 'Nein', 'hsc-sponsoren' ); ?></td>
+						<td>
+							<?php
+							printf(
+								/* translators: 1: default, 2: minimum, 3: maximum */
+								esc_html__( 'Anzahl Spalten am Desktop (ab 1025px; Standard %1$d, erlaubt %2$d bis %3$d). Mehr Spalten = kleinere Logos.', 'hsc-sponsoren' ),
+								(int) Sponsor_Grid::DEFAULT_COLUMNS,
+								(int) Sponsor_Grid::MIN_COLUMNS,
+								(int) Sponsor_Grid::MAX_COLUMNS
+							);
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td><code><?php echo esc_html( $tablet ); ?></code></td>
+						<td><?php esc_html_e( 'Nein', 'hsc-sponsoren' ); ?></td>
+						<td><?php esc_html_e( 'Spalten auf dem Tablet (601 bis 1024px). Ohne Angabe: wie Desktop, höchstens 3.', 'hsc-sponsoren' ); ?></td>
+					</tr>
+					<tr>
+						<td><code><?php echo esc_html( $mobile ); ?></code></td>
+						<td><?php esc_html_e( 'Nein', 'hsc-sponsoren' ); ?></td>
+						<td><?php esc_html_e( 'Spalten auf dem Handy (bis 600px). Ohne Angabe: wie Desktop, höchstens 2.', 'hsc-sponsoren' ); ?></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3><?php esc_html_e( 'Beispiel', 'hsc-sponsoren' ); ?></h3>
+			<p><code style="user-select: all;"><?php echo esc_html( sprintf( '[%s %s="%s" %s="6" %s="4" %s="2"]', $tag, $attribute, $example, $items, $tablet, $mobile ) ); ?></code></p>
+
+			<h3><?php esc_html_e( 'Gut zu wissen', 'hsc-sponsoren' ); ?></h3>
+			<ul style="list-style: disc; padding-left: 1.5em;">
+				<li><?php esc_html_e( 'Hauptsponsor: grid-items="1" oder "2" für große Logos, Gönner: 6 bis 8 für kleine.', 'hsc-sponsoren' ); ?></li>
+				<li><?php esc_html_e( 'Sponsoren ohne Bild erscheinen nur mit Namen. Mit Website ist die Zelle ein Link auf die gespeicherte Adresse, immer in einem neuen Tab.', 'hsc-sponsoren' ); ?></li>
+				<li><?php esc_html_e( 'Logos sind grau und werden bei Hover farbig. Das Raster hat keinen eigenen Hintergrund.', 'hsc-sponsoren' ); ?></li>
 			</ul>
 		</div>
 		<?php

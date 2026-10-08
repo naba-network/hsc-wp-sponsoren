@@ -1,0 +1,110 @@
+/*
+ * [hsc-sponsoren-grid]: columns per screen size via grid-items, grid-items-tablet, grid-items-mobile.
+ * Look: quiet. Grey logos in a thin outlined tile, colour on hover/focus. No background on purpose.
+ * Logo size follows the column width, so more columns = smaller logos.
+ */
+.hsc-grid {
+	--hsc-cols: 4;
+	--hsc-cols-t: 3;
+	--hsc-cols-m: 2;
+	--hsc-grid-gap: clamp(14px, 2.2vw, 30px);
+	--hsc-line: rgba(26, 26, 26, 0.14);
+
+	display: grid;
+	grid-template-columns: repeat(var(--hsc-cols), minmax(0, 1fr));
+	gap: var(--hsc-grid-gap);
+	max-width: calc(var(--hsc-cols) * 340px);
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+.hsc-grid .hsc-grid__item {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hsc-grid .hsc-grid__link,
+.hsc-grid .hsc-grid__item > .hsc-grid__name {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	height: 100%;
+	color: inherit;
+	text-align: center;
+	text-decoration: none;
+}
+
+.hsc-grid .hsc-grid__logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	padding: clamp(8px, 11%, 22px);
+	background: transparent;
+	border: 1px solid var(--hsc-line);
+	border-radius: 8px;
+	transition: border-color 0.2s ease;
+}
+
+.hsc-grid .hsc-grid__img {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+	margin: 0;
+	object-fit: contain;
+	filter: grayscale(1);
+	opacity: 0.78;
+	transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.hsc-grid .hsc-grid__name {
+	font-size: 0.8125rem;
+	line-height: 1.25;
+	overflow-wrap: anywhere;
+}
+
+.hsc-grid a.hsc-grid__link:hover .hsc-grid__img,
+.hsc-grid a.hsc-grid__link:focus-visible .hsc-grid__img {
+	filter: none;
+	opacity: 1;
+}
+
+.hsc-grid a.hsc-grid__link:hover .hsc-grid__logo,
+.hsc-grid a.hsc-grid__link:focus-visible .hsc-grid__logo {
+	border-color: currentColor;
+}
+
+.hsc-grid a.hsc-grid__link:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 4px;
+	border-radius: 8px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+	.hsc-grid {
+		grid-template-columns: repeat(var(--hsc-cols-t), minmax(0, 1fr));
+		max-width: calc(var(--hsc-cols-t) * 340px);
+	}
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+	.hsc-grid {
+		grid-template-columns: repeat(var(--hsc-cols-m), minmax(0, 1fr));
+		max-width: calc(var(--hsc-cols-m) * 340px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hsc-grid .hsc-grid__logo,
+	.hsc-grid .hsc-grid__img {
+		transition: none;
+	}
+}

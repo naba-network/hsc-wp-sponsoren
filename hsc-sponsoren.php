@@ -39,6 +39,8 @@ require_once __DIR__ . '/includes/class-admin-list.php';
 require_once __DIR__ . '/includes/class-slider-items.php';
 require_once __DIR__ . '/includes/class-slider-variant.php';
 require_once __DIR__ . '/includes/class-slider-shortcode.php';
+require_once __DIR__ . '/includes/class-sponsor-grid.php';
+require_once __DIR__ . '/includes/class-grid-shortcode.php';
 require_once __DIR__ . '/includes/class-shortcodes-page.php';
 
 $hsc_spons_updater = new \Hsc\Sponsoren\Updater(
@@ -56,6 +58,7 @@ $hsc_spons_order = new \Hsc\Sponsoren\Category_Order();
 $hsc_spons_order->register();
 ( new \Hsc\Sponsoren\Order_Page( $hsc_spons_order, plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION ) )->register();
 ( new \Hsc\Sponsoren\Slider_Shortcode( plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION ) )->register();
+( new \Hsc\Sponsoren\Grid_Shortcode( plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION, $hsc_spons_order ) )->register();
 ( new \Hsc\Sponsoren\Shortcodes_Page() )->register();
 ( new \Hsc\Sponsoren\Bulk_Upload( plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION ) )->register();
 
