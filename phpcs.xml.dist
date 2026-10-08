@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ruleset name="HSC Sponsoren">
+	<file>hsc-sponsoren.php</file>
+	<file>includes</file>
+	<arg name="extensions" value="php"/>
+	<arg value="ps"/>
+	<config name="testVersion" value="8.0-"/>
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+	</rule>
+	<rule ref="WordPress.WP.I18n">
+		<properties><property name="text_domain" type="array"><element value="hsc-sponsoren"/></property></properties>
+	</rule>
+</ruleset>
