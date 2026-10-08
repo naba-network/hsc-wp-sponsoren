@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       HSC Sponsoren
  * Description:       Manages the sponsors and partners of the club as a single source of truth.
- * Version:           0.1.4
+ * Version:           0.1.5
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            HSC Hohenems
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HSC_SPONS_VERSION', '0.1.4' );
+define( 'HSC_SPONS_VERSION', '0.1.5' );
 define( 'HSC_SPONS_FILE', __FILE__ );
 define( 'HSC_SPONS_GITHUB_REPO', 'naba-network/hsc-wp-sponsoren' );
 
