@@ -64,4 +64,29 @@ final class SponsorGridTest extends TestCase
     {
         self::assertSame($expected, Sponsor_Grid::responsive($desktop, $tablet, $mobile));
     }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public static function enabledProvider(): array
+    {
+        return [
+            'empty is off'      => ['', false],
+            'true'              => ['true', true],
+            'upper case'        => ['TRUE', true],
+            'one'               => ['1', true],
+            'yes'               => ['yes', true],
+            'ja with spaces'    => [' ja ', true],
+            'false'             => ['false', false],
+            'zero'              => ['0', false],
+            'nein'              => ['nein', false],
+            'random text'       => ['vielleicht', false],
+        ];
+    }
+
+    #[DataProvider('enabledProvider')]
+    public function testIsEnabled(string $raw, bool $expected): void
+    {
+        self::assertSame($expected, Sponsor_Grid::is_enabled($raw));
+    }
 }

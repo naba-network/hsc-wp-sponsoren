@@ -57,4 +57,13 @@ final class Sponsor_Grid {
 			'mobile'  => self::columns( $mobile, min( $wide, self::MOBILE_FALLBACK ) ),
 		);
 	}
+
+	/**
+	 * True for "true", "1", "yes", "ja" and "on" (case-insensitive); everything else is false.
+	 *
+	 * @param string $raw Value of a yes/no attribute.
+	 */
+	public static function is_enabled( string $raw ): bool {
+		return in_array( strtolower( trim( $raw ) ), array( 'true', '1', 'yes', 'ja', 'on' ), true );
+	}
 }

@@ -1,6 +1,6 @@
 /*
  * [hsc-sponsoren-grid]: columns per screen size via grid-items, grid-items-tablet, grid-items-mobile.
- * Look: quiet. Full-colour logos on a white card with a thin outline.
+ * Look: quiet. Full-colour logos on a white card; the outline only shows on hover/focus.
  * Logo size follows the column width, so more columns = smaller logos.
  */
 .hsc-grid {
@@ -8,7 +8,6 @@
 	--hsc-cols-t: 3;
 	--hsc-cols-m: 2;
 	--hsc-grid-gap: clamp(14px, 2.2vw, 30px);
-	--hsc-line: rgba(26, 26, 26, 0.14);
 
 	display: grid;
 	grid-template-columns: repeat(var(--hsc-cols), minmax(0, 1fr));
@@ -43,7 +42,7 @@
 	aspect-ratio: 3 / 2;
 	padding: clamp(8px, 11%, 22px);
 	background: #fff;
-	border: 1px solid var(--hsc-line);
+	border: 1px solid transparent;
 	border-radius: 8px;
 	transition: border-color 0.2s ease;
 }
@@ -73,6 +72,22 @@
 	outline: 2px solid currentColor;
 	outline-offset: 4px;
 	border-radius: 8px;
+}
+
+/* hide-name: name stays for screen readers and search engines. */
+.hsc-grid .hsc-grid__name--hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.hsc-grid .hsc-grid__logo:has(+ .hsc-grid__name--hidden) {
+	margin-bottom: 0;
 }
 
 /* Reveal animation: only active when grid.js is loaded (class set by PHP). */

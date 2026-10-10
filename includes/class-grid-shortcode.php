@@ -12,9 +12,10 @@ namespace Hsc\Sponsoren;
 use WP_Term;
 
 /**
- * [hsc-sponsoren-grid kategorie="premium" grid-items="4" grid-items-tablet="3" grid-items-mobile="2"]
+ * [hsc-sponsoren-grid kategorie="premium" grid-items="4" grid-items-tablet="3" grid-items-mobile="2" hide-name="true"]
  *
  * The sponsor name is real text below the logo (good for SEO and screen readers).
+ * With hide-name the name stays in the markup but is only visible to screen readers; sponsors without a logo still show it.
  * Order is the manual order of the category. Sponsors without a logo show the name only.
  * A sponsor with a website links to it exactly as stored, always in a new tab.
  */
@@ -25,6 +26,7 @@ final class Grid_Shortcode {
 	public const ATTR_ITEMS    = 'grid-items';
 	public const ATTR_TABLET   = 'grid-items-tablet';
 	public const ATTR_MOBILE   = 'grid-items-mobile';
+	public const ATTR_HIDE     = 'hide-name';
 	public const STYLE_HANDLE  = 'hsc-sponsoren-grid';
 	public const SCRIPT_HANDLE = 'hsc-sponsoren-grid';
 
@@ -74,6 +76,7 @@ final class Grid_Shortcode {
 				self::ATTR_ITEMS    => '',
 				self::ATTR_TABLET   => '',
 				self::ATTR_MOBILE   => '',
+				self::ATTR_HIDE     => '',
 			),
 			is_array( $atts ) ? $atts : array(),
 			self::TAG
@@ -84,9 +87,10 @@ final class Grid_Shortcode {
 			return $this->notice( __( 'Sponsoren-Grid: Kategorie nicht gefunden. Prüfe das Attribut "kategorie".', 'hsc-sponsoren' ) );
 		}
 
-		$items = '';
+		$hide_name = Sponsor_Grid::is_enabled( (string) $atts[ self::ATTR_HIDE ] );
+		$items     = '';
 		foreach ( $this->order->ordered_ids( $term->term_id ) as $id ) {
-			$items .= $this->render_item( $id );
+			$items .= $this->render_item( $id, $hide_name );
 		}
 		if ( '' === $items ) {
 			return '';
@@ -110,16 +114,18 @@ final class Grid_Shortcode {
 	/**
 	 * One grid cell: logo and name, linked to the website when there is one. Unpublished sponsors give nothing.
 	 *
-	 * @param int $id Sponsor ID.
+	 * @param int  $id        Sponsor ID.
+	 * @param bool $hide_name Show the name to screen readers only (ignored without a logo).
 	 */
-	private function render_item( int $id ): string {
+	private function render_item( int $id, bool $hide_name ): string {
 		if ( 'publish' !== get_post_status( $id ) ) {
 			return '';
 		}
 
 		$name  = get_the_title( $id );
 		$image = $this->logo( $id, $name );
-		$inner = $image . '<span class="hsc-grid__name">' . esc_html( $name ) . '</span>';
+		$class = $hide_name && '' !== $image ? 'hsc-grid__name hsc-grid__name--hidden' : 'hsc-grid__name';
+		$inner = $image . '<span class="' . $class . '">' . esc_html( $name ) . '</span>';
 		$site  = trim( (string) get_post_meta( $id, Post_Type::META_WEBSITE, true ) );
 
 		if ( '' !== $site ) {

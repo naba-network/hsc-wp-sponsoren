@@ -153,6 +153,7 @@ final class Shortcodes_Page {
 		$items     = Grid_Shortcode::ATTR_ITEMS;
 		$tablet    = Grid_Shortcode::ATTR_TABLET;
 		$mobile    = Grid_Shortcode::ATTR_MOBILE;
+		$hide      = Grid_Shortcode::ATTR_HIDE;
 		$terms     = $this->terms();
 		$example   = array() === $terms ? 'premium' : $terms[0]->slug;
 		?>
@@ -200,6 +201,11 @@ final class Shortcodes_Page {
 						<td><?php esc_html_e( 'Nein', 'hsc-sponsoren' ); ?></td>
 						<td><?php esc_html_e( 'Spalten auf dem Handy (bis 600px). Ohne Angabe: wie Desktop, höchstens 2.', 'hsc-sponsoren' ); ?></td>
 					</tr>
+					<tr>
+						<td><code><?php echo esc_html( $hide ); ?></code></td>
+						<td><?php esc_html_e( 'Nein', 'hsc-sponsoren' ); ?></td>
+						<td><?php esc_html_e( '"true" blendet den Namen unter dem Logo aus. Für Screenreader und Suchmaschinen bleibt er erhalten. Sponsoren ohne Logo zeigen den Namen weiterhin.', 'hsc-sponsoren' ); ?></td>
+					</tr>
 				</tbody>
 			</table>
 
@@ -210,7 +216,7 @@ final class Shortcodes_Page {
 			<ul style="list-style: disc; padding-left: 1.5em;">
 				<li><?php esc_html_e( 'Hauptsponsor: grid-items="1" oder "2" für große Logos, Gönner: 6 bis 8 für kleine.', 'hsc-sponsoren' ); ?></li>
 				<li><?php esc_html_e( 'Sponsoren ohne Bild erscheinen nur mit Namen. Mit Website ist die Zelle ein Link auf die gespeicherte Adresse, immer in einem neuen Tab.', 'hsc-sponsoren' ); ?></li>
-				<li><?php esc_html_e( 'Logos sind farbig und stehen auf weißen Karten mit dünnem Rahmen.', 'hsc-sponsoren' ); ?></li>
+				<li><?php esc_html_e( 'Logos sind farbig und stehen auf weißen Karten. Der dünne Rahmen erscheint erst beim Darüberfahren.', 'hsc-sponsoren' ); ?></li>
 			</ul>
 		</div>
 		<?php
