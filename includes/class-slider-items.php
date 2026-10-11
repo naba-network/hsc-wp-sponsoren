@@ -34,4 +34,16 @@ final class Slider_Items {
 
 		return array_merge( ...array_fill( 0, $copies, $items ) );
 	}
+
+	/**
+	 * Splits a comma separated attribute value into trimmed, unique, non-empty entries.
+	 *
+	 * @param string $raw Attribute value, e.g. "premium, sponsoren".
+	 * @return array<int, string>
+	 */
+	public static function split_list( string $raw ): array {
+		$parts = array_map( 'trim', explode( ',', $raw ) );
+
+		return array_values( array_unique( array_filter( $parts, static fn( string $part ): bool => '' !== $part ) ) );
+	}
 }

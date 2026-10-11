@@ -52,9 +52,9 @@ $hsc_spons_updater->register();
 
 ( new \Hsc\Sponsoren\Post_Type() )->register();
 ( new \Hsc\Sponsoren\Meta_Box() )->register();
-( new \Hsc\Sponsoren\Admin_List() )->register();
 
 $hsc_spons_order = new \Hsc\Sponsoren\Category_Order();
+( new \Hsc\Sponsoren\Admin_List( $hsc_spons_order ) )->register();
 $hsc_spons_order->register();
 ( new \Hsc\Sponsoren\Order_Page( $hsc_spons_order, plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION ) )->register();
 ( new \Hsc\Sponsoren\Slider_Shortcode( plugin_dir_url( HSC_SPONS_FILE ), HSC_SPONS_VERSION ) )->register();

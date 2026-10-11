@@ -32,4 +32,27 @@ final class SliderItemsTest extends TestCase
     {
         self::assertSame($expected, Slider_Items::repeat_to_fill($items, $minimum));
     }
+
+    /**
+     * @return array<string, array{string, list<string>}>
+     */
+    public static function splitProvider(): array
+    {
+        return [
+            'single value'            => ['premium', ['premium']],
+            'two values with spaces'  => ['premium, sponsoren', ['premium', 'sponsoren']],
+            'empty entries dropped'   => [' ,premium,, ', ['premium']],
+            'duplicates dropped'      => ['a,b,a', ['a', 'b']],
+            'empty string'            => ['', []],
+        ];
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[DataProvider('splitProvider')]
+    public function testSplitList(string $raw, array $expected): void
+    {
+        self::assertSame($expected, Slider_Items::split_list($raw));
+    }
 }

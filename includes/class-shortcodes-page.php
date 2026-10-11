@@ -85,7 +85,7 @@ final class Shortcodes_Page {
 					<tr>
 						<td><code><?php echo esc_html( $attribute ); ?></code></td>
 						<td><?php esc_html_e( 'Ja', 'hsc-sponsoren' ); ?></td>
-						<td><?php esc_html_e( 'Kürzel (Slug) oder ID der Kategorie.', 'hsc-sponsoren' ); ?></td>
+						<td><?php esc_html_e( 'Kürzel (Slug) oder ID der Kategorie. Mehrere Kategorien mit Komma trennen, z. B. premium,sponsoren. Jeder Sponsor erscheint nur einmal.', 'hsc-sponsoren' ); ?></td>
 					</tr>
 					<tr>
 						<td><code><?php echo esc_html( $variant ); ?></code></td>

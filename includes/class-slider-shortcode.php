@@ -12,7 +12,7 @@ namespace Hsc\Sponsoren;
 use WP_Term;
 
 /**
- * [hsc-sponsoren-slider kategorie="premium"]
+ * [hsc-sponsoren-slider kategorie="premium"] or several categories: kategorie="premium,sponsoren"
  *
  * Pure CSS: the band is rendered twice and the CSS moves it by exactly one copy, so the loop is seamless.
  * The run time is "number of cards x seconds per card", so the speed does not depend on the number of sponsors.
@@ -77,12 +77,12 @@ final class Slider_Shortcode {
 			return $this->notice( __( 'Sponsoren-Slider: Variante unbekannt. Erlaubt sind: ', 'hsc-sponsoren' ) . implode( ', ', Slider_Variant::names() ) );
 		}
 
-		$term = $this->find_term( (string) $atts[ self::ATTR_CATEGORY ] );
-		if ( ! $term instanceof WP_Term ) {
+		$terms = $this->find_terms( (string) $atts[ self::ATTR_CATEGORY ] );
+		if ( array() === $terms ) {
 			return $this->notice( __( 'Sponsoren-Slider: Kategorie nicht gefunden. Prüfe das Attribut "kategorie".', 'hsc-sponsoren' ) );
 		}
 
-		$cards = $this->cards( $term );
+		$cards = $this->cards( $terms );
 		if ( array() === $cards ) {
 			return '';
 		}
@@ -97,7 +97,7 @@ final class Slider_Shortcode {
 
 		return sprintf(
 			'<div class="hsc-slider-group" role="region" aria-label="%1$s">%2$s</div>',
-			esc_attr( sprintf( /* translators: %s: category name */ __( 'Sponsoren: %s', 'hsc-sponsoren' ), $term->name ) ),
+			esc_attr( sprintf( /* translators: %s: category names */ __( 'Sponsoren: %s', 'hsc-sponsoren' ), implode( ', ', wp_list_pluck( $terms, 'name' ) ) ) ),
 			$rows
 		);
 	}
@@ -133,31 +133,33 @@ final class Slider_Shortcode {
 	}
 
 	/**
-	 * Finds the category by slug or by ID.
+	 * Finds the categories of a comma separated list of slugs or IDs; unknown entries are skipped.
 	 *
 	 * @param string $raw Value of the attribute.
+	 * @return array<int, WP_Term>
 	 */
-	private function find_term( string $raw ): ?WP_Term {
-		$raw = trim( $raw );
-		if ( '' === $raw ) {
-			return null;
+	private function find_terms( string $raw ): array {
+		$terms = array();
+		foreach ( Slider_Items::split_list( $raw ) as $entry ) {
+			$term = get_term_by( 'slug', $entry, Post_Type::TAXONOMY );
+			if ( ! $term instanceof WP_Term && ctype_digit( $entry ) ) {
+				$term = get_term( (int) $entry, Post_Type::TAXONOMY );
+			}
+			if ( $term instanceof WP_Term ) {
+				$terms[ $term->term_id ] = $term;
+			}
 		}
 
-		$term = get_term_by( 'slug', $raw, Post_Type::TAXONOMY );
-		if ( ! $term instanceof WP_Term && ctype_digit( $raw ) ) {
-			$term = get_term( (int) $raw, Post_Type::TAXONOMY );
-		}
-
-		return $term instanceof WP_Term ? $term : null;
+		return array_values( $terms );
 	}
 
 	/**
-	 * Logo markup of all published sponsors of the category that have an image.
+	 * Logo markup of all published sponsors of the categories that have an image (each sponsor once).
 	 *
-	 * @param WP_Term $term Category.
+	 * @param array<int, WP_Term> $terms Categories.
 	 * @return array<int, string>
 	 */
-	private function cards( WP_Term $term ): array {
+	private function cards( array $terms ): array {
 		$ids = get_posts(
 			array(
 				'post_type'      => Post_Type::POST_TYPE,
@@ -169,7 +171,7 @@ final class Slider_Shortcode {
 					array(
 						'taxonomy' => Post_Type::TAXONOMY,
 						'field'    => 'term_id',
-						'terms'    => array( $term->term_id ),
+						'terms'    => wp_list_pluck( $terms, 'term_id' ),
 					),
 				),
 			)
